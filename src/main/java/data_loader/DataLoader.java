@@ -4,7 +4,6 @@ import graph.IndexDomainVertex;
 import graph.RelationshipEdge;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.Multigraph;
 import org.jgrapht.graph.SimpleGraph;
 
 import java.io.*;
@@ -140,5 +139,27 @@ public class DataLoader {
         }
 
         return copy;
+    }
+
+    public static void transpose(List<Integer> grid, int size) {
+        for (int i = 0; i < size; i++) {
+            for (int j = i + 1; j < size; j++) {
+                int temp = grid.get(i * size + j);
+                grid.set(i * size + j, grid.get(j * size + i));
+                grid.set(j * size + i, temp);
+            }
+        }
+    }
+
+    public static List<Integer> getMostFrequent(List<Integer> list) {
+        var result = new ArrayList<Integer>();
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : list) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEach(v -> result.add(v.getKey()));
+        result.remove(Integer.valueOf(-1));
+        return result;
     }
 }

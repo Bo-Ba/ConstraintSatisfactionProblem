@@ -12,7 +12,6 @@ public class BinaryConstraints {
         return false;
     }
 
-    //write method to find if number of ones is equal to number of zeros in a list
     public static boolean isOneZero(List<Integer> list) {
         if(list.contains(-1)) return true;
         int ones = 0;
@@ -24,8 +23,6 @@ public class BinaryConstraints {
         return ones == zeros;
     }
 
-    //with given a 1d array which represents a matrix and rows number, write method  to find if every row is unique
-    //ignore if -1 in a row
     public static boolean isUniqueRows(List<Integer> grid, int rows) {
         for (int i = 0; i < rows; i++) {
             for (int j = i + 1; j < rows; j++) {
@@ -35,7 +32,6 @@ public class BinaryConstraints {
         return true;
     }
 
-    //write method to check if list contains only ones and zeros
     public static boolean isOnlyOnesZeros(List<Integer> list) {
         for (Integer integer : list) {
             if (integer != 0 && integer != 1) return false;
