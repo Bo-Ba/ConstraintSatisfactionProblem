@@ -14,6 +14,8 @@ public class BinaryBacktracking extends BacktrackingBase {
         this.domain = Arrays.asList(0, 1);
         this.index = index;
         this.size = size;
+        this.filedFieldsInColNum = DataLoader.countRowFilledFields(grid, size);
+        this.filedFieldsInRowNum = DataLoader.countColumnFilledFields(grid, size);
     }
 
     public BinaryBacktracking(BinaryBacktracking toCopy) {
@@ -21,6 +23,8 @@ public class BinaryBacktracking extends BacktrackingBase {
         this.domain = new ArrayList<>(toCopy.domain);
         this.index = toCopy.index;
         this.size = toCopy.size;
+        this.filedFieldsInColNum = toCopy.filedFieldsInColNum.clone();
+        this.filedFieldsInRowNum = toCopy.filedFieldsInRowNum.clone();
     }
 
     @Override
@@ -67,12 +71,12 @@ public class BinaryBacktracking extends BacktrackingBase {
 
     @Override
     public void increaseIndex() {
-        index++;
+        if(index < grid.size() - 1) index++;
     }
 
     @Override
     public boolean isFilled() {
-        return grid.size() == index && BinaryConstraints.isOnlyOnesZeros(grid);
+        return BinaryConstraints.isOnlyOnesZeros(grid);
     }
 
     @Override
@@ -84,6 +88,15 @@ public class BinaryBacktracking extends BacktrackingBase {
     public BacktrackingBase createCopyAndIncreaseIndex() {
         BinaryBacktracking copy = new BinaryBacktracking(this);
         copy.increaseIndex();
+        return copy;
+    }
+
+    @Override
+    public BacktrackingBase createCopy() {
+        BinaryBacktracking copy = new BinaryBacktracking(this);
+        copy.increaseIndex();
+        copy.filedFieldsInRowNum[index / size]++;
+        copy.filedFieldsInColNum[index % size]++;
         return copy;
     }
 }

@@ -16,6 +16,8 @@ public class BinaryForwardChecking extends ForwardCheckingBase {
         this.domain = Arrays.asList(0, 1);
         this.index = index;
         this.size = size;
+        this.filedFieldsInColNum = DataLoader.countRowFilledFields(grid, size);
+        this.filedFieldsInRowNum = DataLoader.countColumnFilledFields(grid, size);
     }
 
     public BinaryForwardChecking(BinaryForwardChecking toCopy) {
@@ -23,6 +25,8 @@ public class BinaryForwardChecking extends ForwardCheckingBase {
         this.domain = new ArrayList<>(toCopy.domain);
         this.index = toCopy.index;
         this.size = toCopy.size;
+        this.filedFieldsInColNum = toCopy.filedFieldsInColNum.clone();
+        this.filedFieldsInRowNum = toCopy.filedFieldsInRowNum.clone();
     }
 
     @Override
@@ -30,6 +34,9 @@ public class BinaryForwardChecking extends ForwardCheckingBase {
         grid.set(index, value);
         inserted = value;
         extractDataToConstraintsCheck();
+
+        filedFieldsInRowNum[index / size]++;
+        filedFieldsInColNum[index % size]++;
     }
 
     private void extractDataToConstraintsCheck() {
@@ -108,5 +115,14 @@ public class BinaryForwardChecking extends ForwardCheckingBase {
     @Override
     public void adjustDomain() {
         //just do nothing
+    }
+
+    @Override
+    public BinaryForwardChecking createCopy() {
+        BinaryForwardChecking copy = new BinaryForwardChecking(this);
+        copy.increaseIndex();
+        copy.filedFieldsInRowNum[index / size]++;
+        copy.filedFieldsInColNum[index % size]++;
+        return copy;
     }
 }

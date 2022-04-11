@@ -3,9 +3,11 @@ package coinstraints;
 import graph.IndexDomainVertex;
 import graph.RelationshipEdge;
 import org.jgrapht.Graph;
-import org.jgrapht.alg.util.Pair;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class FutoshikiConstraints {
 
@@ -24,9 +26,16 @@ public class FutoshikiConstraints {
         Set<RelationshipEdge> edges = constraintGraph.outgoingEdgesOf(vertex);
 
         for (RelationshipEdge edge : edges) {
-            switch (edge.getLabel()) {
-                case ">" -> result = grid.get(edge.getTarget()) == -1 || grid.get(edge.getSource()) > grid.get(edge.getTarget());
-                case "<" -> result = grid.get(edge.getTarget()) == -1 || grid.get(edge.getSource()) < grid.get(edge.getTarget());
+            if (edge.getTarget() == index) {
+                switch (edge.getLabel()) {
+                    case ">" -> result = grid.get(edge.getSource()) == -1 || grid.get(edge.getSource()) > grid.get(edge.getTarget());
+                    case "<" -> result = grid.get(edge.getSource()) == -1 || grid.get(edge.getSource()) < grid.get(edge.getTarget());
+                }
+            } else {
+                switch (edge.getLabel()) {
+                    case ">" -> result = grid.get(edge.getTarget()) == -1 || grid.get(edge.getSource()) > grid.get(edge.getTarget());
+                    case "<" -> result = grid.get(edge.getTarget()) == -1 || grid.get(edge.getSource()) < grid.get(edge.getTarget());
+                }
             }
             if (!result) return false;
         }

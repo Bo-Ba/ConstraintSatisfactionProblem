@@ -21,6 +21,8 @@ public class FutoshikiForwardChecking extends ForwardCheckingBase {
         this.index = index;
         this.size = size;
         this.constraintGraph = DataLoader.deepCopyGraph(constraintGraph);
+        this.filedFieldsInColNum = DataLoader.countRowFilledFields(grid, size);
+        this.filedFieldsInRowNum = DataLoader.countColumnFilledFields(grid, size);
     }
 
     public FutoshikiForwardChecking(FutoshikiForwardChecking toCopy) {
@@ -29,12 +31,17 @@ public class FutoshikiForwardChecking extends ForwardCheckingBase {
         this.index = toCopy.index;
         this.size = toCopy.size;
         this.constraintGraph = null;
+        this.filedFieldsInColNum = toCopy.filedFieldsInColNum.clone();
+        this.filedFieldsInRowNum = toCopy.filedFieldsInRowNum.clone();
     }
 
     @Override
     public void setValue(int value) {
         grid.set(index, value);
         extractDataToConstraintsCheck();
+
+        filedFieldsInRowNum[index / size]++;
+        filedFieldsInColNum[index % size]++;
     }
 
     private void extractDataToConstraintsCheck() {
@@ -65,7 +72,7 @@ public class FutoshikiForwardChecking extends ForwardCheckingBase {
 
     @Override
     public boolean isFilled() {
-        return grid.size() == index;
+        return grid.size() == index && grid.stream().noneMatch(v -> v == -1);
     }
 
     @Override
@@ -95,5 +102,20 @@ public class FutoshikiForwardChecking extends ForwardCheckingBase {
         } catch (NoSuchElementException e) {
             //just swallow the exception
         }
+    }
+
+    @Override
+    public FutoshikiForwardChecking createCopy() {
+        FutoshikiForwardChecking copy = new FutoshikiForwardChecking(this);
+
+        var tempGraph = (Graph<IndexDomainVertex, RelationshipEdge>) DataLoader.deepCopyGraph(constraintGraph);
+        FutoshikiConstraints.deleteIndexesFromNeighboursDomain(index, grid.get(index), tempGraph);
+        FutoshikiConstraints.deleteIndexesFromRowAndColumnDomain(index, grid.get(index), tempGraph, size);
+
+        copy.constraintGraph = tempGraph;
+        copy.increaseIndex();
+        copy.filedFieldsInRowNum[index / size]++;
+        copy.filedFieldsInColNum[index % size]++;
+        return copy;
     }
 }

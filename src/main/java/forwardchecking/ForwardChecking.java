@@ -2,13 +2,12 @@ package forwardchecking;
 
 import data_loader.DataLoader;
 
-import java.util.ArrayList;
-
 public class ForwardChecking {
 
     public static int gridsCount = 0;
     public static int count = 0;
     public static boolean isHeuristicMostFrequent = false;
+    public static boolean isHeuristicMostFilled = false;
 
     public static void startForwardChecking(ForwardCheckingBase forwardChecking) {
         forwardChecking(forwardChecking);
@@ -38,7 +37,6 @@ public class ForwardChecking {
 
             if (isHeuristicMostFrequent) {
                 var frequent = DataLoader.getMostFrequent(forwardChecking.grid);
-                var temp = new ArrayList<Integer>();
                 for (var e : forwardChecking.domain) {
                     if (!frequent.contains(e)) {
                         frequent.add(e);
@@ -47,12 +45,15 @@ public class ForwardChecking {
                 forwardChecking.domain = frequent;
             }
 
+            if(isHeuristicMostFilled) {
+                forwardChecking.index = DataLoader.getIndexToInsert(forwardChecking.grid, forwardChecking.filedFieldsInRowNum, forwardChecking.filedFieldsInColNum, forwardChecking.size);
+            }
             for (Integer value : forwardChecking.domain) {
                 gridsCount++;
                 forwardChecking.setValue(value);
 
                 if (forwardChecking.checkConstraints()) {
-                    forwardChecking(forwardChecking.createCopyAndIncreaseIndex());
+                    forwardChecking(forwardChecking.createCopy());
                 }
             }
         } else {

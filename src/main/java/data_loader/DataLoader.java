@@ -15,6 +15,8 @@ import java.util.stream.IntStream;
 
 public class DataLoader {
 
+
+
     public static List<Integer> loadBinary(String size) {
         File file = new File("src/main/resources/binary_" + size);
         List<String> charResult = new ArrayList<>();
@@ -162,4 +164,71 @@ public class DataLoader {
         result.remove(Integer.valueOf(-1));
         return result;
     }
+
+    public static int[] countRowFilledFields(List<Integer> grid, int size) {
+        int[] filledRows = new int[size];
+        for (int i = 0; i < size; i++) {
+            int count = 0;
+            for (int j = 0; j < size; j++) {
+                if (grid.get(i * size + j) != -1) {
+                    count++;
+                }
+            }
+            filledRows[i] = count;
+        }
+        return filledRows;
+    }
+
+    public static int[] countColumnFilledFields(List<Integer> grid, int size) {
+        int[] filledColumns = new int[size];
+        for (int i = 0; i < size; i++) {
+            int count = 0;
+            for (int j = 0; j < size; j++) {
+                if (grid.get(j * size + i) != -1) {
+                    count++;
+                }
+            }
+            filledColumns[i] = count;
+        }
+        return filledColumns;
+    }
+
+    public static int getIndexToInsert(List<Integer> grid, int[] filledRows, int[] filledColumns, int size) {
+        int rowIndex = 0;
+        int colIndex = 0;
+        int maxRow = -1;
+        int maxColumn = -1;
+
+        for (int i = 0; i < size; i++) {
+           if(filledRows[i] > maxRow && filledRows[i] < size) {
+               maxRow = filledRows[i];
+               rowIndex = i;
+           }
+
+           if(filledColumns[i] > maxColumn && filledRows[i] < size) {
+               maxColumn = filledColumns[i];
+               colIndex = i;
+           }
+        }
+
+        if(maxRow > maxColumn) {
+            for (int i = 0; i < size; i++) {
+                if(grid.get(rowIndex * size + i) == -1) return rowIndex * size + i;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if(grid.get(i * size + colIndex) == -1) return i * size + colIndex;
+            }
+        }
+
+        return getFirstPossible(grid);
+    }
+    
+    public static int getFirstPossible(List<Integer> grid) {
+       for(int i = 0; i < grid.size(); i++) {
+           if(grid.get(i) == -1) return i;
+       }
+       return -1;
+    }
+    
 }

@@ -26,7 +26,10 @@ public class BinaryConstraints {
     public static boolean isUniqueRows(List<Integer> grid, int rows) {
         for (int i = 0; i < rows; i++) {
             for (int j = i + 1; j < rows; j++) {
-                if (grid.subList(i * rows, i * rows + rows).equals(grid.subList(j * rows, j * rows + rows))) return false;
+                List<Integer> firstRow = grid.subList(i * rows, i * rows + rows);
+                List<Integer> secondRow = grid.subList(j * rows, j * rows + rows);
+                if(firstRow.stream().anyMatch(v -> v == -1) || secondRow.stream().anyMatch(v -> v == -1)) return true;
+                if (firstRow.equals(secondRow)) return false;
             }
         }
         return true;

@@ -7,6 +7,7 @@ public class Backtracking {
     public static int count = 0;
     static int gridsCount = 0;
     public static boolean isHeuristicMostFrequent = false;
+    public static boolean isHeuristicMostFilled = false;
 
     public static void startBacktracking(BacktrackingBase backtracking) {
         backtracking(backtracking);
@@ -40,13 +41,18 @@ public class Backtracking {
                 }
                 backtracking.domain = frequent;
             }
+
+            if(isHeuristicMostFilled) {
+                backtracking.index = DataLoader.getIndexToInsert(backtracking.grid, backtracking.filedFieldsInRowNum, backtracking.filedFieldsInColNum, backtracking.size);
+            }
             for (Integer value : backtracking.domain) {
                 backtracking.setValue(value);
                 gridsCount++;
 
                 if (backtracking.checkConstraints()) {
-                    backtracking(backtracking.createCopyAndIncreaseIndex());
+                    backtracking(backtracking.createCopy());
                 }
+
             }
         } else {
             backtracking(backtracking.createCopyAndIncreaseIndex());
