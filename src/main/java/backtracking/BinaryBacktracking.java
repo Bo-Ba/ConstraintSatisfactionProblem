@@ -59,6 +59,8 @@ public class BinaryBacktracking extends BacktrackingBase {
         boolean zeroOneEqualRow = BinaryConstraints.isOneZero(rowValues);
         boolean zeroOneEqualColumn = BinaryConstraints.isOneZero(columnValues);
 
+        gridsCount += 8;
+
         return !areThreeConsecutiveZerosRow
                 && !areThreeConsecutiveOnesRow
                 && !areThreeConsecutiveZerosColumn

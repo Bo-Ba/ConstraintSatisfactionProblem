@@ -2,17 +2,26 @@ package backtracking;
 
 import data_loader.DataLoader;
 
+import java.time.Duration;
+import java.time.Instant;
+
 
 public class Backtracking {
     public static int count = 0;
     static int gridsCount = 0;
+    static int insertCount = 0;
     public static boolean isHeuristicMostFrequent = false;
     public static boolean isHeuristicMostFilled = false;
 
     public static void startBacktracking(BacktrackingBase backtracking) {
+        Instant start = Instant.now();
         backtracking(backtracking);
-        System.out.println("Created grids: " + gridsCount);
+        Instant finish = Instant.now();
+
+        System.out.println("Created grids: " + backtracking.gridsCount);
         System.out.println("Found solutions: " + count);
+        System.out.println("FInsertions made: " + insertCount);
+        System.out.println("Time elapsed " + Duration.between(start, finish).toMillis());
     }
 
     public static void backtracking(BacktrackingBase backtracking) {
@@ -47,10 +56,11 @@ public class Backtracking {
             }
             for (Integer value : backtracking.domain) {
                 backtracking.setValue(value);
-                gridsCount++;
+                insertCount++;
 
                 if (backtracking.checkConstraints()) {
                     backtracking(backtracking.createCopy());
+                    backtracking.gridsCount++;
                 }
 
             }

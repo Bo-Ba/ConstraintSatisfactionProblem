@@ -65,6 +65,8 @@ public class BinaryForwardChecking extends ForwardCheckingBase {
         boolean zeroOneEqualRow = BinaryConstraints.isOneZero(rowValues);
         boolean zeroOneEqualColumn = BinaryConstraints.isOneZero(columnValues);
 
+        gridsCount += 8;
+
         return !areThreeConsecutiveZerosRow
                 && !areThreeConsecutiveOnesRow
                 && !areThreeConsecutiveZerosColumn
@@ -123,6 +125,7 @@ public class BinaryForwardChecking extends ForwardCheckingBase {
         copy.increaseIndex();
         copy.filedFieldsInRowNum[index / size]++;
         copy.filedFieldsInColNum[index % size]++;
+        copy.domain = this.adjustChildDomain();
         return copy;
     }
 }

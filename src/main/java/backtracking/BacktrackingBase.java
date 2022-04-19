@@ -9,6 +9,7 @@ public abstract class BacktrackingBase {
     ArrayList<Integer> rowValues, columnValues, transposed;
     int [] filedFieldsInRowNum;
     int [] filedFieldsInColNum;
+    public static int gridsCount = 0;
 
     public abstract void setValue(int value);
     public abstract boolean checkConstraints();

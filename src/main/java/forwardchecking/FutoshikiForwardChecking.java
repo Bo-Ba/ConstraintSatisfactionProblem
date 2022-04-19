@@ -62,6 +62,8 @@ public class FutoshikiForwardChecking extends ForwardCheckingBase {
         boolean isValueInRowDuplicated = FutoshikiConstraints.checkDuplicates(rowValues);
         boolean isValueInColumnDuplicated = FutoshikiConstraints.checkDuplicates(columnValues);
 
+        gridsCount += 3;
+
         return isGreatest && !isValueInColumnDuplicated && !isValueInRowDuplicated;
     }
 

@@ -2,17 +2,25 @@ package forwardchecking;
 
 import data_loader.DataLoader;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public class ForwardChecking {
 
     public static int gridsCount = 0;
     public static int count = 0;
+    public static int insertCount = 0;
     public static boolean isHeuristicMostFrequent = false;
     public static boolean isHeuristicMostFilled = false;
 
     public static void startForwardChecking(ForwardCheckingBase forwardChecking) {
+        Instant start = Instant.now();
         forwardChecking(forwardChecking);
-        System.out.println("Created grids: " + gridsCount);
+        Instant finish = Instant.now();
+        System.out.println("Created grids: " + forwardChecking.gridsCount);
         System.out.println("Solutions found: " + count);
+        System.out.println("Insertions made: " + insertCount);
+        System.out.println("Time elapsed: " + Duration.between(start, finish).toMillis());
     }
 
     public static void forwardChecking(ForwardCheckingBase forwardChecking) {
@@ -49,11 +57,12 @@ public class ForwardChecking {
                 forwardChecking.index = DataLoader.getIndexToInsert(forwardChecking.grid, forwardChecking.filedFieldsInRowNum, forwardChecking.filedFieldsInColNum, forwardChecking.size);
             }
             for (Integer value : forwardChecking.domain) {
-                gridsCount++;
                 forwardChecking.setValue(value);
+                insertCount++;
 
                 if (forwardChecking.checkConstraints()) {
                     forwardChecking(forwardChecking.createCopy());
+                    forwardChecking.gridsCount++;
                 }
             }
         } else {

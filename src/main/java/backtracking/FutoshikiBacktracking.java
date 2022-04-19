@@ -58,6 +58,8 @@ public class FutoshikiBacktracking extends BacktrackingBase {
         boolean isValueInRowDuplicated = FutoshikiConstraints.checkDuplicates(rowValues);
         boolean isValueInColumnDuplicated = FutoshikiConstraints.checkDuplicates(columnValues);
 
+        gridsCount += 3;
+
         return isGreatest && !isValueInColumnDuplicated && !isValueInRowDuplicated;
     }
 

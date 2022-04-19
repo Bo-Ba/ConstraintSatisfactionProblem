@@ -9,6 +9,7 @@ public abstract class ForwardCheckingBase {
     ArrayList<Integer> rowValues, columnValues, transposed;
     public int [] filedFieldsInRowNum;
     public int [] filedFieldsInColNum;
+    public static int gridsCount = 0;
 
     public abstract void setValue(int value);
     public abstract boolean checkConstraints();
